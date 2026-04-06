@@ -1,0 +1,1583 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>My Profile — Z12 Car Wash Dubai</title>
+    <link rel="stylesheet" href="shared.css" />
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        /* ── Layout ── */
+        .app {
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* ── Sidebar ── */
+        .sidebar {
+            width: 260px;
+            flex-shrink: 0;
+            background: rgba(13, 20, 33, 0.95);
+            border-right: 1px solid var(--border);
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            top: 0;
+            left: 0;
+            bottom: 0;
+            z-index: 200;
+            overflow-y: auto;
+        }
+
+        .sidebar-header {
+            padding: 1.5rem;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            font-weight: 500;
+            margin-bottom: 1.4rem;
+            transition: color var(--transition);
+        }
+
+        .back-link:hover {
+            color: var(--text-primary);
+        }
+
+        /* Avatar */
+        .avatar-wrap {
+            display: flex;
+            align-items: center;
+            gap: 0.9rem;
+        }
+
+        .avatar {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.1rem;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 0 16px rgba(59, 130, 246, 0.4);
+        }
+
+        .avatar-name {
+            font-weight: 700;
+            font-size: 0.95rem;
+            margin-bottom: 0.15rem;
+        }
+
+        .avatar-email {
+            color: var(--text-muted);
+            font-size: 0.75rem;
+        }
+
+        /* Nav */
+        .sidebar-nav {
+            flex: 1;
+            padding: 1.2rem 0.8rem;
+        }
+
+        .nav-section-label {
+            font-size: 0.66rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--text-dim);
+            padding: 0 0.8rem;
+            margin: 1.2rem 0 0.5rem;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem 0.8rem;
+            border-radius: var(--radius);
+            color: var(--text-muted);
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            user-select: none;
+            width: 100%;
+            background: none;
+            border: none;
+            text-align: left;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .nav-item:hover {
+            background: var(--glass);
+            color: var(--text-primary);
+        }
+
+        .nav-item.active {
+            background: rgba(59, 130, 246, 0.15);
+            color: var(--accent-blue);
+            font-weight: 600;
+        }
+
+        .nav-item .nav-icon {
+            font-size: 1rem;
+            width: 20px;
+            text-align: center;
+        }
+
+        .nav-badge {
+            margin-left: auto;
+            background: var(--accent-blue);
+            color: #fff;
+            font-size: 0.65rem;
+            font-weight: 700;
+            padding: 2px 7px;
+            border-radius: 100px;
+        }
+
+        /* Sidebar footer */
+        .sidebar-footer {
+            padding: 1rem;
+            border-top: 1px solid var(--border);
+        }
+
+        .logout-btn {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            width: 100%;
+            padding: 0.7rem 0.8rem;
+            background: rgba(239, 68, 68, 0.08);
+            border: 1px solid rgba(239, 68, 68, 0.15);
+            border-radius: var(--radius);
+            color: #f87171;
+            font-size: 0.88rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .logout-btn:hover {
+            background: rgba(239, 68, 68, 0.16);
+        }
+
+        /* ── Main content ── */
+        .main-content {
+            flex: 1;
+            margin-left: 260px;
+            padding: 2.5rem;
+            min-height: 100vh;
+        }
+
+        /* ── Page header ── */
+        .page-header {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1.5rem;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 1rem;
+        }
+
+        .page-title {
+            font-size: 1.6rem;
+            font-weight: 800;
+            margin-bottom: 0.2rem;
+        }
+
+        .page-sub {
+            color: var(--text-muted);
+            font-size: 0.88rem;
+        }
+
+        /* ── Panels ── */
+        .panel {
+            display: none;
+        }
+
+        .panel.active {
+            display: block;
+            animation: fadeInUp 0.35s ease both;
+        }
+
+        /* ── Stats row ── */
+        .stats-row {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem;
+            text-align: center;
+        }
+
+        .stat-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 2rem;
+            font-weight: 800;
+            color: var(--accent-blue);
+            display: block;
+        }
+
+        .stat-label {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.2rem;
+        }
+
+        /* ── Profile form ── */
+        .profile-section {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-hdr {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-hdr h3 {
+            font-size: 1rem;
+            font-weight: 700;
+        }
+
+        .field-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+
+        .field-grid .full {
+            grid-column: 1 / -1;
+        }
+
+        /* Avatar editor */
+        .avatar-editor {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+            padding: 1.4rem;
+            background: rgba(59, 130, 246, 0.05);
+            border: 1px solid rgba(59, 130, 246, 0.15);
+            border-radius: var(--radius-lg);
+            margin-bottom: 1.5rem;
+        }
+
+        .avatar-lg {
+            width: 72px;
+            height: 72px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 800;
+            font-size: 1.6rem;
+            color: #fff;
+            flex-shrink: 0;
+            box-shadow: 0 0 20px rgba(59, 130, 246, 0.4);
+        }
+
+        .avatar-editor-info p {
+            color: var(--text-muted);
+            font-size: 0.82rem;
+            margin-top: 0.3rem;
+        }
+
+        /* ── Toggle switch ── */
+        .toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 1rem 0;
+            border-bottom: 1px solid var(--border);
+        }
+
+        .toggle-row:last-child {
+            border-bottom: none;
+        }
+
+        .toggle-info h4 {
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 0.15rem;
+        }
+
+        .toggle-info p {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .toggle {
+            position: relative;
+            width: 44px;
+            height: 24px;
+            flex-shrink: 0;
+        }
+
+        .toggle input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+
+        .toggle-slider {
+            position: absolute;
+            inset: 0;
+            background: var(--border);
+            border-radius: 100px;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .toggle-slider::before {
+            content: '';
+            position: absolute;
+            height: 18px;
+            width: 18px;
+            top: 3px;
+            left: 3px;
+            background: white;
+            border-radius: 50%;
+            transition: var(--transition);
+        }
+
+        .toggle input:checked+.toggle-slider {
+            background: var(--accent-blue);
+        }
+
+        .toggle input:checked+.toggle-slider::before {
+            transform: translateX(20px);
+        }
+
+        /* ── Bookings ── */
+        .booking-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 1.1rem;
+            margin-bottom: 0.8rem;
+            transition: var(--transition);
+        }
+
+        .booking-card:hover {
+            background: var(--glass-hover);
+        }
+
+        .booking-icon {
+            width: 46px;
+            height: 46px;
+            border-radius: 12px;
+            background: rgba(59, 130, 246, 0.12);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.3rem;
+            flex-shrink: 0;
+        }
+
+        .booking-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            margin-bottom: 0.2rem;
+        }
+
+        .booking-meta {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+        }
+
+        .booking-right {
+            margin-left: auto;
+            text-align: right;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 4rem 2rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state .empty-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.1rem;
+            margin-bottom: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        /* ── Calendar ── */
+        .booking-flow {
+            max-width: 700px;
+        }
+
+        .step-indicator {
+            display: flex;
+            align-items: center;
+            gap: 0;
+            margin-bottom: 2rem;
+        }
+
+        .step {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            flex: 1;
+        }
+
+        .step-num {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            background: var(--glass);
+            border: 2px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 0.8rem;
+            font-weight: 700;
+            color: var(--text-muted);
+            flex-shrink: 0;
+            transition: var(--transition);
+        }
+
+        .step.active .step-num,
+        .step.done .step-num {
+            background: var(--accent-blue);
+            border-color: var(--accent-blue);
+            color: #fff;
+        }
+
+        .step-label {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            font-weight: 500;
+            white-space: nowrap;
+        }
+
+        .step.active .step-label {
+            color: var(--text-primary);
+            font-weight: 600;
+        }
+
+        .step-line {
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+            margin: 0 0.5rem;
+        }
+
+        .step-line.done {
+            background: var(--accent-blue);
+        }
+
+        .date-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 0.75rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .date-btn {
+            background: var(--glass);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1rem 0.5rem;
+            text-align: center;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .date-btn:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.08);
+        }
+
+        .date-btn.selected {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.15);
+        }
+
+        .date-day {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            display: block;
+        }
+
+        .date-num {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.4rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            display: block;
+        }
+
+        .date-month {
+            font-size: 0.72rem;
+            color: var(--text-muted);
+            display: block;
+        }
+
+        .time-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .time-card {
+            position: relative;
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s cubic-bezier(0.4, 0, 0.2, 1), box-shadow 0.2s ease, border-color 0.2s ease;
+            height: 120px;
+            display: flex;
+            align-items: flex-end;
+            text-align: left;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .time-card:active {
+            transform: scale(0.95);
+        }
+
+        .time-card:hover:not(.booked) {
+            border-color: var(--accent-blue);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.25);
+            transform: translateY(-3px) scale(0.98);
+        }
+        
+        .time-card:active:not(.booked) {
+            transform: translateY(0) scale(0.95);
+            box-shadow: 0 4px 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .time-card.selected {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px var(--accent-blue), 0 8px 24px rgba(59, 130, 246, 0.3);
+        }
+
+        .time-card-img {
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0.5;
+            transition: opacity 0.3s ease, transform 0.8s ease;
+            transform: scale(1.05);
+        }
+        
+        .time-card:hover:not(.booked) .time-card-img {
+            opacity: 0.7;
+            transform: scale(1);
+        }
+
+        .time-card-overlay {
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(to top, rgba(8, 12, 18, 0.95) 0%, rgba(8, 12, 18, 0.2) 60%);
+        }
+
+        .time-card-content {
+            position: relative;
+            z-index: 2;
+            padding: 1rem;
+            width: 100%;
+        }
+
+        .time-val {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: #fff;
+            line-height: 1;
+        }
+
+        .time-status {
+            font-size: 0.75rem;
+            font-weight: 600;
+            color: var(--success);
+            margin-top: 0.25rem;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .time-status::before {
+            content: '';
+            width: 6px; height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            display: block;
+            box-shadow: 0 0 8px var(--success);
+        }
+
+        .time-card.booked {
+            cursor: not-allowed;
+            border-color: transparent;
+        }
+
+        .time-card.booked .time-card-img {
+            opacity: 0.15;
+            filter: grayscale(100%);
+        }
+
+        .time-card.booked .time-card-overlay {
+            background: rgba(8, 12, 18, 0.85);
+        }
+
+        .time-card.booked .time-val {
+            color: var(--text-dim);
+        }
+
+        .time-card.booked .time-status {
+            color: var(--danger);
+        }
+        
+        .time-card.booked .time-status::before {
+            background: var(--danger);
+            box-shadow: 0 0 8px var(--danger); 
+        }
+
+        .booking-summary {
+            background: rgba(59, 130, 246, 0.08);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: var(--radius-lg);
+            padding: 1.4rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .pay-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .pay-card {
+            background: var(--bg-secondary);
+            border: 1.5px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1rem;
+            cursor: pointer;
+            text-align: center;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        .pay-card:hover {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.05);
+        }
+
+        .pay-card:active {
+            transform: scale(0.96);
+        }
+
+        .pay-card.selected {
+            border-color: var(--accent-blue);
+            background: rgba(59, 130, 246, 0.1);
+            box-shadow: 0 0 0 2px var(--accent-blue);
+        }
+        
+        .pay-icon {
+            font-size: 2rem;
+        }
+        
+        .pay-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+        }
+
+        .summary-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+            font-size: 0.9rem;
+        }
+
+        .summary-row:last-child {
+            border-bottom: none;
+        }
+
+        .summary-row span:first-child {
+            color: var(--text-muted);
+        }
+
+        .summary-row span:last-child {
+            font-weight: 600;
+        }
+
+        /* ── Mobile bottom nav ── */
+        .mobile-nav {
+            display: none;
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: rgba(8, 12, 18, 0.95);
+            backdrop-filter: blur(16px);
+            border-top: 1px solid var(--border);
+            padding: 0.5rem 0;
+            z-index: 200;
+            grid-template-columns: repeat(5, 1fr);
+        }
+
+        .mob-nav-btn {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 3px;
+            padding: 0.5rem;
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 0.62rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: var(--transition);
+            font-family: 'Inter', sans-serif;
+        }
+
+        .mob-nav-btn .mob-icon {
+            font-size: 1.2rem;
+        }
+
+        .mob-nav-btn.active {
+            color: var(--accent-blue);
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .sidebar {
+                display: none;
+            }
+
+            .main-content {
+                margin-left: 0;
+                padding: 1.5rem 1rem 5rem;
+            }
+
+            .mobile-nav {
+                display: grid;
+            }
+
+            .field-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .date-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+
+            .stats-row {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .date-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <a href="index.html" class="back-link">← Back to Z12</a>
+            <div class="avatar-wrap">
+                <div class="avatar" id="sideAvatar">?</div>
+                <div>
+                    <div class="avatar-name" id="sideName">Loading…</div>
+                    <div class="avatar-email" id="sideEmail"></div>
+                </div>
+            </div>
+        </div>
+        <nav class="sidebar-nav">
+            <p class="nav-section-label">Account</p>
+            <button class="nav-item active" onclick="showPanel('profile')" id="nav-profile">
+                <span class="nav-icon">👤</span> My Profile
+            </button>
+            <button class="nav-item" onclick="showPanel('bookings')" id="nav-bookings">
+                <span class="nav-icon">📋</span> My Bookings
+                <span class="nav-badge" id="bookingsBadge" style="display:none">0</span>
+            </button>
+            <p class="nav-section-label">Services</p>
+            <button class="nav-item" onclick="showPanel('book')" id="nav-book">
+                <span class="nav-icon">🚗</span> Book a Wash
+            </button>
+            <p class="nav-section-label">Preferences</p>
+            <button class="nav-item" onclick="showPanel('settings')" id="nav-settings">
+                <span class="nav-icon">⚙️</span> Settings
+            </button>
+            <p class="nav-section-label" style="margin-top:1.5rem;">Management</p>
+            <a href="admin.html" class="nav-item" style="text-decoration:none;">
+                <span class="nav-icon" style="color:var(--accent-blue);">🛡️</span> Admin Dashboard
+            </a>
+        </nav>
+        <div class="sidebar-footer">
+            <button class="logout-btn" onclick="logout()">🚪 Sign Out</button>
+        </div>
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <div class="app">
+        <main class="main-content">
+
+            <!-- ─── MY PROFILE ─── -->
+            <div class="panel active" id="panel-profile">
+                <div class="page-header">
+                    <div>
+                        <div class="page-title">My Profile</div>
+                        <div class="page-sub">Manage your personal information</div>
+                    </div>
+                    <button class="btn btn-outline btn-sm" onclick="saveProfile()">💾 Save Changes</button>
+                </div>
+
+                <div class="stats-row">
+                    <div class="stat-card">
+                        <span class="stat-num" id="statWashes">0</span>
+                        <div class="stat-label">Total Washes</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num" id="statUpcoming">0</span>
+                        <div class="stat-label">Upcoming</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-num">⭐ 5.0</span>
+                        <div class="stat-label">Z12 Rating</div>
+                    </div>
+                </div>
+
+                <!-- Avatar -->
+                <div class="avatar-editor">
+                    <div class="avatar-lg" id="profileAvatar">?</div>
+                    <div class="avatar-editor-info">
+                        <h3 id="profileName" style="font-size:1.05rem;font-weight:700;">Your Name</h3>
+                        <p>Member since <span id="profileJoined"></span></p>
+                        <p style="margin-top:0.3rem;">Avatar uses your initials — personalisation coming soon</p>
+                    </div>
+                </div>
+
+                <!-- Personal Info -->
+                <div class="profile-section">
+                    <div class="section-hdr">
+                        <h3>Personal Information</h3>
+                        <span class="badge badge-blue">Editable</span>
+                    </div>
+                    <div class="field-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="pf-name">Full Name</label>
+                            <input class="form-input" id="pf-name" type="text" placeholder="Your full name" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="pf-phone">Phone Number</label>
+                            <input class="form-input" id="pf-phone" type="tel" placeholder="+971 50 000 0000" />
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label" for="pf-email">Email Address</label>
+                            <input class="form-input" id="pf-email" type="email" placeholder="you@email.com" />
+                        </div>
+                        <div class="form-group full">
+                            <label class="form-label" for="pf-car">Car Model <span
+                                    style="color:var(--text-dim);font-size:0.7rem;text-transform:none;letter-spacing:0">(optional)</span></label>
+                            <input class="form-input" id="pf-car" type="text" placeholder="e.g. Toyota Camry 2022" />
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Change Password -->
+                <div class="profile-section">
+                    <div class="section-hdr">
+                        <h3>Change Password</h3>
+                    </div>
+                    <div class="field-grid">
+                        <div class="form-group">
+                            <label class="form-label" for="pf-pw-cur">Current Password</label>
+                            <input class="form-input" id="pf-pw-cur" type="password" placeholder="••••••••" />
+                        </div>
+                        <div class="form-group">
+                            <label class="form-label" for="pf-pw-new">New Password</label>
+                            <input class="form-input" id="pf-pw-new" type="password" placeholder="Min 8 chars" />
+                        </div>
+                    </div>
+                    <button class="btn btn-ghost btn-sm" onclick="changePassword()">🔑 Update Password</button>
+                </div>
+            </div>
+
+            <!-- ─── MY BOOKINGS ─── -->
+            <div class="panel" id="panel-bookings">
+                <div class="page-header">
+                    <div>
+                        <div class="page-title">My Bookings</div>
+                        <div class="page-sub">Your upcoming and past car wash appointments</div>
+                    </div>
+                    <button class="btn btn-primary btn-sm" onclick="showPanel('book')">＋ New Booking</button>
+                </div>
+                <div id="bookingsList"></div>
+            </div>
+
+            <!-- ─── BOOK A WASH ─── -->
+            <div class="panel" id="panel-book">
+                <div class="page-header">
+                    <div>
+                        <div class="page-title">Book a Wash</div>
+                        <div class="page-sub">Choose your preferred date and time</div>
+                    </div>
+                </div>
+                <div class="booking-flow">
+
+                    <!-- Step indicator -->
+                    <div class="step-indicator">
+                        <div class="step active" id="step1">
+                            <div class="step-num">1</div>
+                            <div class="step-label">Date</div>
+                        </div>
+                        <div class="step-line" id="line1"></div>
+                        <div class="step" id="step2">
+                            <div class="step-num">2</div>
+                            <div class="step-label">Time</div>
+                        </div>
+                        <div class="step-line" id="line2"></div>
+                        <div class="step" id="step3">
+                            <div class="step-num">3</div>
+                            <div class="step-label">Confirm</div>
+                        </div>
+                    </div>
+
+                    <!-- Step 1: Date -->
+                    <div id="bookStep1">
+                        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">Select a date for your
+                            wash:</p>
+                        <div class="date-grid" id="dateGrid"></div>
+                        <button class="btn btn-primary" id="toStep2Btn" onclick="goToStep2()" disabled
+                            style="opacity:0.4;cursor:not-allowed;">Next: Choose Time →</button>
+                    </div>
+
+                    <!-- Step 2: Time -->
+                    <div id="bookStep2" style="display:none;">
+                        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">Select an available
+                            time slot:</p>
+                        <div class="time-grid" id="timeGrid"></div>
+                        <div style="display:flex;gap:0.8rem;">
+                            <button class="btn btn-ghost" onclick="goToStep1()">← Back</button>
+                            <button class="btn btn-primary" id="toStep3Btn" onclick="goToStep3()" disabled
+                                style="opacity:0.4;cursor:not-allowed;">Next: Confirm →</button>
+                        </div>
+                    </div>
+
+                    <!-- Step 3: Confirm -->
+                    <div id="bookStep3" style="display:none;">
+                        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">Review and confirm your booking:</p>
+                        <div class="booking-summary">
+                            <div class="summary-row"><span>Location</span><span>Z12 Car Wash, Al Wasl</span></div>
+                            <div class="summary-row"><span>Date</span><span id="sumDate">—</span></div>
+                            <div class="summary-row"><span>Time</span><span id="sumTime">—</span></div>
+                            <div class="summary-row"><span>Service</span><span>Premium Car Wash</span></div>
+                            <div class="summary-row" style="margin-top:0.5rem;padding-top:0.5rem;border-top:1px solid rgba(255,255,255,0.1)"><span>Total</span><span style="color:#fff;">AED 120</span></div>
+                        </div>
+
+                        <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1rem;">Select Payment Method:</p>
+                        <div class="pay-grid">
+                            <div class="pay-card" onclick="selectPayment(this, 'card')">
+                                <div class="pay-icon">💳</div>
+                                <div class="pay-title">Credit / Debit Card</div>
+                            </div>
+                            <div class="pay-card" onclick="selectPayment(this, 'cash')">
+                                <div class="pay-icon">💵</div>
+                                <div class="pay-title">Pay with Cash</div>
+                            </div>
+                        </div>
+
+                        <div style="display:flex;gap:0.8rem;">
+                            <button class="btn btn-ghost" onclick="goToStep2()">← Back</button>
+                            <button class="btn btn-primary" id="confirmBtn" onclick="confirmBooking()" disabled style="opacity:0.4; cursor:not-allowed;">✅ Confirm Booking</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ─── SETTINGS ─── -->
+            <div class="panel" id="panel-settings">
+                <div class="page-header">
+                    <div>
+                        <div class="page-title">Settings</div>
+                        <div class="page-sub">Manage your preferences and account</div>
+                    </div>
+                </div>
+
+                <!-- Notifications -->
+                <div class="profile-section" style="margin-bottom:1.5rem;">
+                    <div class="section-hdr">
+                        <h3>Notifications</h3>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>SMS Reminders</h4>
+                            <p>Get a text before your appointment</p>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="notif-sms" checked onchange="saveNotif()" />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>Email Confirmations</h4>
+                            <p>Receive booking confirmations by email</p>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="notif-email" checked onchange="saveNotif()" />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>Promotional Offers</h4>
+                            <p>Exclusive deals and discounts</p>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="notif-promo" onchange="saveNotif()" />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- App settings -->
+                <div class="profile-section" style="margin-bottom:1.5rem;">
+                    <div class="section-hdr">
+                        <h3>App Preferences</h3>
+                    </div>
+                    <div class="toggle-row">
+                        <div class="toggle-info">
+                            <h4>Auto-Save Profile</h4>
+                            <p>Save changes automatically as you type</p>
+                        </div>
+                        <label class="toggle">
+                            <input type="checkbox" id="pref-autosave" checked />
+                            <span class="toggle-slider"></span>
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Danger zone -->
+                <div class="profile-section" style="border-color:rgba(239,68,68,0.2);background:rgba(239,68,68,0.04);">
+                    <div class="section-hdr">
+                        <h3 style="color:#f87171;">Danger Zone</h3>
+                    </div>
+                    <p style="color:var(--text-muted);font-size:0.88rem;margin-bottom:1.2rem;">Actions here cannot be
+                        undone. Please be certain before proceeding.</p>
+                    <div style="display:flex;gap:0.8rem;flex-wrap:wrap;">
+                        <button class="btn btn-ghost btn-sm" onclick="clearBookings()">🗑 Clear All Bookings</button>
+                        <button class="btn btn-danger btn-sm" onclick="deleteAccount()">⚠️ Delete Account</button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+    </div>
+
+    <!-- ── Mobile Nav ── -->
+    <nav class="mobile-nav">
+        <button class="mob-nav-btn active" id="mob-profile" onclick="showPanel('profile')"><span
+                class="mob-icon">👤</span>Profile</button>
+        <button class="mob-nav-btn" id="mob-bookings" onclick="showPanel('bookings')"><span
+                class="mob-icon">📋</span>Bookings</button>
+        <button class="mob-nav-btn" id="mob-book" onclick="showPanel('book')"><span
+                class="mob-icon">🚗</span>Book</button>
+        <button class="mob-nav-btn" id="mob-settings" onclick="showPanel('settings')"><span
+                class="mob-icon">⚙️</span>Settings</button>
+        <button class="mob-nav-btn" onclick="window.location.href='admin.html'"><span 
+                class="mob-icon">🛡️</span>Admin</button>
+    </nav>
+
+    <!-- Toast -->
+    <div id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script>
+        // ── UTILS ──────────────────────────────────────────
+        const $ = id => document.getElementById(id);
+        function showToast(msg, type = 'success') {
+            const t = $('toast');
+            t.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+            t.className = 'show ' + type;
+            setTimeout(() => t.className = '', 3200);
+        }
+
+        // ── FIREBASE INIT ───────────────────────────────────
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5gpmCX8Qunh3qkgNhA2fvkd2ijWgNt6c",
+            authDomain: "z12-car-wash.firebaseapp.com",
+            projectId: "z12-car-wash",
+            storageBucket: "z12-car-wash.firebasestorage.app",
+            messagingSenderId: "1018370366812",
+            appId: "1:1018370366812:web:4c4e618f442a9b0b28f599"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        // ── AUTH & DATA SYNC ────────────────────────────────
+        let currentUser = null;
+        let userDocRef = null;
+        let bookingsListener = null;
+
+        auth.onAuthStateChanged(async (user) => {
+            if (!user) { 
+                window.location.href = 'signin.html'; 
+                return; 
+            }
+            
+            userDocRef = db.collection('users').doc(user.uid);
+            
+            // Listen for real-time updates to the profile
+            userDocRef.onSnapshot(doc => {
+                if(doc.exists) {
+                    if(!currentUser) currentUser = { id: doc.id, email: user.email, ...doc.data() };
+                    else currentUser = { ...currentUser, ...doc.data() };
+                    
+                    if(!currentUser.bookings) currentUser.bookings = [];
+                    if(!currentUser.notifications) currentUser.notifications = {};
+                    initUI();
+                } else {
+                    showToast('Profile not found in cloud database', 'error');
+                }
+            });
+
+            // Listen for real-time user bookings explicitly from root collection
+            if(bookingsListener) bookingsListener(); 
+            bookingsListener = db.collection('bookings').where('userId', '==', user.uid)
+                .onSnapshot(snapshot => {
+                    if(!currentUser) return;
+                    currentUser.bookings = snapshot.docs.map(d => ({ id: d.id, ...d.data() }));
+                    renderBookings();
+                    updateStats();
+                });
+        });
+
+        function initUI() {
+            const initials = currentUser.name.split(' ').map(n => n[0]).join('').toUpperCase().slice(0, 2);
+            // Sidebar
+            $('sideAvatar').textContent = initials;
+            $('sideName').textContent = currentUser.name;
+            $('sideEmail').textContent = currentUser.email;
+            // Profile
+            $('profileAvatar').textContent = initials;
+            $('profileName').textContent = currentUser.name;
+            $('profileJoined').textContent = new Date(currentUser.joined).toLocaleDateString('en-AE', { month: 'long', year: 'numeric' });
+            $('pf-name').value = currentUser.name || '';
+            $('pf-email').value = currentUser.email || '';
+            $('pf-phone').value = currentUser.phone || '';
+            $('pf-car').value = currentUser.car || '';
+            // Notifications
+            const n = currentUser.notifications || {};
+            $('notif-sms').checked = n.sms !== false;
+            $('notif-email').checked = n.email !== false;
+            $('notif-promo').checked = !!n.promo;
+            renderBookings();
+            buildDateGrid();
+            updateStats();
+        }
+
+        // ── PANELS ─────────────────────────────────────────
+        const PANELS = ['profile', 'bookings', 'book', 'settings'];
+        function showPanel(p) {
+            PANELS.forEach(id => {
+                $('panel-' + id).classList.toggle('active', id === p);
+                const navBtn = $('nav-' + id);
+                if (navBtn) navBtn.classList.toggle('active', id === p);
+                const mobBtn = $('mob-' + id);
+                if (mobBtn) mobBtn.classList.toggle('active', id === p);
+            });
+            if (p === 'bookings') renderBookings();
+            if (p === 'book') resetBookingFlow();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+
+        // ── PROFILE SAVE ───────────────────────────────────
+        async function saveProfile() {
+            try {
+                await userDocRef.update({
+                    name: $('pf-name').value.trim() || currentUser.name,
+                    phone: $('pf-phone').value.trim(),
+                    car: $('pf-car').value.trim()
+                });
+                showToast('Profile updated successfully!');
+            } catch (err) {
+                showToast('Error saving profile: ' + err.message, 'error');
+            }
+        }
+
+        async function changePassword() {
+            const cur = $('pf-pw-cur').value;
+            const nw = $('pf-pw-new').value;
+            if (!cur || !nw) { showToast('Fill in both password fields.', 'error'); return; }
+            if (nw.length < 8) { showToast('New password must be at least 8 characters.', 'error'); return; }
+            
+            try {
+                // Must re-auth first
+                const cred = firebase.auth.EmailAuthProvider.credential(auth.currentUser.email, cur);
+                await auth.currentUser.reauthenticateWithCredential(cred);
+                
+                // Update password
+                await auth.currentUser.updatePassword(nw);
+                $('pf-pw-cur').value = '';
+                $('pf-pw-new').value = '';
+                showToast('Password updated!');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        // ── BOOKINGS ────────────────────────────────────────
+        function getBookings() { return currentUser.bookings || []; }
+        function updateStats() {
+            const b = getBookings();
+            const now = new Date();
+            const upcoming = b.filter(bk => new Date(bk.datetime) > now);
+            $('statWashes').textContent = b.length;
+            $('statUpcoming').textContent = upcoming.length;
+            const badge = $('bookingsBadge');
+            badge.textContent = upcoming.length;
+            badge.style.display = upcoming.length > 0 ? 'inline-block' : 'none';
+        }
+
+        function renderBookings() {
+            const list = $('bookingsList');
+            const bookings = getBookings().slice().reverse();
+            if (bookings.length === 0) {
+                list.innerHTML = `<div class="empty-state">
+          <div class="empty-icon">🚗</div>
+          <h3>No bookings yet</h3>
+          <p>Book your first premium car wash below!</p>
+          <button class="btn btn-primary" style="margin-top:1rem;" onclick="showPanel('book')">Book a Wash</button>
+        </div>`;
+                return;
+            }
+            list.innerHTML = '';
+
+            const now = new Date();
+            bookings.forEach(bk => {
+                const dt = new Date(bk.datetime);
+                const isPast = dt < now;
+                const card = document.createElement('div');
+                card.className = 'booking-card';
+                card.innerHTML = `
+          <div class="booking-icon">🚿</div>
+          <div>
+            <div class="booking-name">Premium Car Wash</div>
+            <div class="booking-meta">Z12 Car Wash · Al Wasl, Dubai</div>
+          </div>
+          <div class="booking-right">
+            <div style="font-weight:700;font-size:0.9rem;">${dt.toLocaleDateString('en-AE', { weekday: 'short', month: 'short', day: 'numeric' })}</div>
+            <div style="color:var(--text-muted);font-size:0.8rem;">${bk.time}</div>
+            <span class="badge ${isPast ? 'badge-muted' : 'badge-success'}" style="margin-top:0.3rem;">${isPast ? 'Completed' : 'Upcoming'}</span>
+          </div>`;
+                list.appendChild(card);
+            });
+        }
+
+        // ── BOOKING FLOW ────────────────────────────────────
+        let selDate = null, selTime = null;
+
+        const BOOKED_SLOTS = ['10:00 AM', '12:00 PM', '3:00 PM']; // mock booked
+        const TIMES = ['9:00 AM', '10:00 AM', '11:00 AM', '12:00 PM', '1:00 PM', '2:00 PM', '3:00 PM', '4:00 PM', '5:00 PM', '6:00 PM', '7:00 PM', '8:00 PM'];
+        const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+        const MONTHS = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+
+        function buildDateGrid() {
+            const grid = $('dateGrid');
+            grid.innerHTML = '';
+            const today = new Date();
+            for (let i = 0; i < 8; i++) {
+                const d = new Date(today);
+                d.setDate(today.getDate() + i);
+                const btn = document.createElement('button');
+                btn.className = 'date-btn';
+                btn.innerHTML = `<span class="date-day">${DAYS[d.getDay()]}</span><span class="date-num">${d.getDate()}</span><span class="date-month">${MONTHS[d.getMonth()]}</span>`;
+                btn.dataset.date = d.toISOString();
+                btn.onclick = () => selectDate(btn, d);
+                grid.appendChild(btn);
+            }
+        }
+
+        function selectDate(btn, d) {
+            document.querySelectorAll('.date-btn').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selDate = d;
+            const tb = $('toStep2Btn');
+            tb.disabled = false;
+            tb.style.opacity = '1';
+            tb.style.cursor = 'pointer';
+        }
+
+        // ── DB CONNECTION (Production) ─────────────────────
+        const DB = {
+            async fetchSlots(date) {
+                const dateCode = date.toISOString().split('T')[0];
+                const snapshot = await db.collection('bookings').where('dateCode', '==', dateCode).get();
+                return snapshot.docs.map(d => d.data().time);
+            }
+        };
+
+        let timeSnapshotUnsubscribe = null;
+
+        async function buildTimeGrid(date) {
+            const grid = $('timeGrid');
+            grid.innerHTML = '<span class="spinner" style="margin:2rem auto;display:block;"></span>';
+            
+            if (timeSnapshotUnsubscribe) {
+                timeSnapshotUnsubscribe();
+                timeSnapshotUnsubscribe = null;
+            }
+
+            const dateCode = date.toISOString().split('T')[0];
+            
+            // "Beautiful pictures" for slots
+            const bgs = [
+                'https://images.unsplash.com/photo-1601362840469-51e4d8d58785?w=400&q=80',
+                'https://images.unsplash.com/photo-1520340356584-f9917d1e5104?w=400&q=80',
+                'https://images.unsplash.com/photo-1600880292203-757bb62b4baf?w=400&q=80',
+                'https://images.unsplash.com/photo-1552930294-6b595f4c2974?w=400&q=80',
+            ];
+
+            // REAL-TIME LISTENER FOR THIS DATE
+            timeSnapshotUnsubscribe = db.collection('bookings')
+                .where('dateCode', '==', dateCode)
+                .onSnapshot(snap => {
+                    const bookedSlots = snap.docs.map(doc => doc.data().time);
+                    grid.innerHTML = '';
+
+                    TIMES.forEach((t, i) => {
+                        const isBooked = bookedSlots.includes(t);
+                        const bgStr = bgs[i % bgs.length];
+                        const btn = document.createElement('div');
+                        btn.className = 'time-card' + (isBooked ? ' booked' : '');
+                        
+                        const parts = t.split(' ');
+                        
+                        btn.innerHTML = `
+                            <div class="time-card-img" style="background-image: url('${bgStr}')"></div>
+                            <div class="time-card-overlay"></div>
+                            <div class="time-card-content">
+                                <div class="time-val">${parts[0]} <span style="font-size:1rem;color:var(--text-muted);">${parts[1]}</span></div>
+                                <div class="time-status">${isBooked ? 'Fully Booked' : 'Available'}</div>
+                            </div>
+                        `;
+
+                        if (!isBooked) {
+                            btn.onclick = () => selectTime(btn, t);
+                        } else if (t === selTime) {
+                            // If the time was selected but just got booked by someone else
+                            selTime = null;
+                            const tb = $('toStep3Btn');
+                            tb.disabled = true;
+                            tb.style.opacity = '0.4';
+                            showToast('This time was just booked by another user!', 'error');
+                        }
+                        grid.appendChild(btn);
+                    });
+                }, err => {
+                    grid.innerHTML = `<p style="color:var(--danger)">Sync Error: ${err.message}</p>`;
+                });
+        }
+
+        function selectTime(btn, t) {
+            document.querySelectorAll('.time-card').forEach(b => b.classList.remove('selected'));
+            btn.classList.add('selected');
+            selTime = t;
+            const tb = $('toStep3Btn');
+            tb.disabled = false;
+            tb.style.opacity = '1';
+            tb.style.cursor = 'pointer';
+        }
+
+        function setStep(n) {
+            [1, 2, 3].forEach(i => {
+                const s = $('step' + i);
+                if (i < n) { s.classList.add('done'); s.classList.remove('active'); s.querySelector('.step-num').textContent = '✓'; }
+                else if (i === n) { s.classList.add('active'); s.classList.remove('done'); s.querySelector('.step-num').textContent = i; }
+                else { s.classList.remove('done', 'active'); s.querySelector('.step-num').textContent = i; }
+            });
+            if ($('line1')) $('line1').classList.toggle('done', n > 1);
+            if ($('line2')) $('line2').classList.toggle('done', n > 2);
+            $('bookStep1').style.display = n === 1 ? 'block' : 'none';
+            $('bookStep2').style.display = n === 2 ? 'block' : 'none';
+            $('bookStep3').style.display = n === 3 ? 'block' : 'none';
+        }
+
+        function goToStep1() { setStep(1); }
+        function goToStep2() {
+            if (!selDate) return;
+            buildTimeGrid(selDate);
+            selTime = null;
+            const tb = $('toStep3Btn');
+            tb.disabled = true; tb.style.opacity = '0.4'; tb.style.cursor = 'not-allowed';
+            setStep(2);
+        }
+        function goToStep3() {
+            if (!selTime) return;
+            $('sumDate').textContent = selDate.toLocaleDateString('en-AE', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' });
+            $('sumTime').textContent = selTime;
+            setStep(3);
+        }
+        let selPayment = null;
+
+        function selectPayment(card, method) {
+            document.querySelectorAll('.pay-card').forEach(b => b.classList.remove('selected'));
+            card.classList.add('selected');
+            selPayment = method;
+            const btn = $('confirmBtn');
+            btn.disabled = false;
+            btn.style.opacity = '1';
+            btn.style.cursor = 'pointer';
+        }
+
+        function resetBookingFlow() {
+            selDate = null; selTime = null; selPayment = null;
+            buildDateGrid();
+            document.querySelectorAll('.pay-card').forEach(b => b.classList.remove('selected'));
+            const tb2 = $('toStep2Btn');
+            tb2.disabled = true; tb2.style.opacity = '0.4'; tb2.style.cursor = 'not-allowed';
+            const cb = $('confirmBtn');
+            cb.disabled = true; cb.style.opacity = '0.4'; cb.style.cursor = 'not-allowed';
+            setStep(1);
+        }
+
+        async function sendNotification(bk) {
+            // Placeholder: Replace with EmailJS / Twilio / Firebase Cloud Functions trigger
+            // e.g. emailjs.send("service_id", "template_id", { name: currentUser.name, time: bk.time });
+            console.log("NOTIFICATION DISPATCHED:", bk);
+            showToast('✅ SMS / Email Notification Dispatched successfully (Mock)');
+        }
+
+        async function confirmBooking() {
+            const btn = $('confirmBtn');
+            btn.disabled = true;
+            btn.innerHTML = '<span class="spinner"></span>';
+            
+            const booking = {
+                userId: auth.currentUser.uid,
+                datetime: selDate.toISOString(),
+                dateCode: selDate.toISOString().split('T')[0],
+                time: selTime,
+                service: 'Premium Car Wash',
+                status: 'upcoming',
+                paymentMode: selPayment
+            };
+            
+            try {
+                await db.collection('bookings').add(booking);
+                showToast('Booking confirmed! See you at Z12 🚗');
+                // Trigger Background SMS / Email
+                sendNotification(booking);
+                setTimeout(() => showPanel('bookings'), 1200);
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+            
+            btn.innerHTML = '✅ Confirm Booking';
+            btn.disabled = false;
+        }
+
+        // ── SETTINGS ────────────────────────────────────────
+        function saveNotif() {
+            userDocRef.update({
+                notifications: {
+                    sms: $('notif-sms').checked,
+                    email: $('notif-email').checked,
+                    promo: $('notif-promo').checked
+                }
+            }).then(() => showToast('Preferences saved!'))
+              .catch(err => showToast(err.message, 'error'));
+        }
+
+        async function clearBookings() {
+            if (!confirm('Clear all bookings? This cannot be undone.')) return;
+            try {
+                const snapshot = await db.collection('bookings').where('userId', '==', auth.currentUser.uid).get();
+                const batch = db.batch();
+                snapshot.docs.forEach(doc => batch.delete(doc.ref));
+                await batch.commit();
+                showToast('All bookings cleared.');
+            } catch (err) {
+                showToast(err.message, 'error');
+            }
+        }
+
+        async function deleteAccount() {
+            if (!confirm('Delete your account permanently? This cannot be undone.')) return;
+            try {
+                await userDocRef.delete();
+                await auth.currentUser.delete();
+                window.location.href = 'index.html';
+            } catch (err) {
+                if(err.code === 'auth/requires-recent-login'){
+                    showToast('Please sign out and sign back in to delete your account.', 'error');
+                } else {
+                    showToast(err.message, 'error');
+                }
+            }
+        }
+
+        function logout() {
+            auth.signOut();
+        }
+    </script>
+</body>
+
+</html>

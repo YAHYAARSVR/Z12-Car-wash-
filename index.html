@@ -1,0 +1,927 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Z12 Car Wash — Premium Mobile Valet in Dubai</title>
+    <meta name="description"
+        content="Experience Dubai's most premium mobile car wash service. We come to you. Book via our AI assistant in seconds." />
+    <!-- Preconnect to fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="shared.css" />
+    
+    <style>
+        /* ── Header ── */
+        .main-header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 4%;
+            background: rgba(8, 12, 18, 0.75);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid var(--border);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .header-nav {
+            display: flex;
+            gap: 2rem;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 500;
+            transition: var(--transition);
+            position: relative;
+        }
+
+        .nav-link:hover {
+            color: var(--text-primary);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0%;
+            height: 2px;
+            background: var(--accent-blue);
+            bottom: -5px;
+            left: 0;
+            transition: width 0.3s ease;
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        /* ── Hero Section ── */
+        .hero {
+            position: relative;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            padding: 80px 4% 0; /* offset for header */
+            overflow: hidden;
+            background: 
+                radial-gradient(ellipse 900px 900px at 50% -20%, rgba(59, 130, 246, 0.15), transparent),
+                var(--bg-primary);
+        }
+
+        .hero-bg-glow {
+            position: absolute;
+            width: 60vw;
+            height: 60vw;
+            background: radial-gradient(circle, rgba(37, 99, 235, 0.15) 0%, rgba(8, 12, 18, 0) 70%);
+            top: 50%;
+            right: -10%;
+            transform: translateY(-50%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .hero-content {
+            flex: 1;
+            max-width: 600px;
+            z-index: 2;
+            animation: slideInRight 1s cubic-bezier(0.16, 1, 0.3, 1) both;
+            padding-right: 2rem;
+        }
+
+        .hero-tag {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.4rem 1rem;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 100px;
+            color: var(--accent-blue);
+            font-size: 0.8rem;
+            font-weight: 700;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-tag .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--accent-blue);
+            border-radius: 50%;
+            animation: pulse-blue 2s infinite;
+        }
+
+        .hero-title {
+            font-size: clamp(3rem, 5vw, 4.5rem);
+            line-height: 1.1;
+            margin-bottom: 1.5rem;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .hero-desc {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            margin-bottom: 2.5rem;
+            max-width: 500px;
+            line-height: 1.8;
+        }
+
+        .hero-btn-group {
+            display: flex;
+            gap: 1rem;
+            align-items: center;
+        }
+
+        .hero-image-wrap {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 2;
+            animation: fadeIn 1.2s ease 0.3s both;
+            position: relative;
+        }
+
+        .hero-image-wrap img {
+            max-width: 120%;
+            height: auto;
+            transform: scale(1.1) translateX(5%);
+            filter: drop-shadow(0 30px 40px rgba(0,0,0,0.6));
+            border-radius: 20px;
+        }
+
+        /* Float animation for the image */
+        .floating {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        /* ── Services Section ── */
+        .services {
+            padding: 8rem 4%;
+            position: relative;
+            background: var(--bg-secondary);
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 5rem;
+        }
+
+        .section-title {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .section-subtitle {
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            padding: 2.5rem;
+            transition: var(--transition);
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0;
+            height: 4px;
+            background: linear-gradient(90deg, var(--accent-blue), transparent);
+            opacity: 0;
+            transition: var(--transition);
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            background: var(--glass-hover);
+            border-color: rgba(59, 130, 246, 0.3);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
+        }
+
+        .service-card:hover::before {
+            opacity: 1;
+        }
+
+        .service-icon {
+            width: 60px;
+            height: 60px;
+            background: rgba(59, 130, 246, 0.1);
+            border: 1px solid rgba(59, 130, 246, 0.2);
+            border-radius: 16px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-price {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            color: var(--accent-blue);
+            font-weight: 800;
+            margin-bottom: 1rem;
+        }
+
+        .service-price span {
+            font-size: 1rem;
+            color: var(--text-muted);
+            font-weight: 400;
+        }
+
+        .service-card h3 {
+            font-size: 1.4rem;
+            margin-bottom: 0.8rem;
+        }
+
+        .service-card p {
+            color: var(--text-dim);
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+            flex: 1;
+        }
+
+        /* ── AI Chatbot Widget ── */
+        .chat-widget-btn {
+            position: fixed;
+            bottom: 2.5rem;
+            right: 2.5rem;
+            width: 64px;
+            height: 64px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--accent-blue), #1d4ed8);
+            box-shadow: 0 10px 30px rgba(59, 130, 246, 0.5), 0 0 0 1px rgba(255,255,255,0.1) inset;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            z-index: 9999;
+            transition: var(--transition);
+            border: none;
+            color: white;
+            font-size: 1.8rem;
+        }
+
+        .chat-widget-btn:hover {
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 15px 40px rgba(59, 130, 246, 0.7);
+        }
+
+        .chat-widget-btn .bot-eye {
+            animation: blink 4s infinite;
+        }
+
+        @keyframes blink {
+            0%, 96%, 98% { opacity: 1; }
+            97% { opacity: 0; }
+        }
+
+        .chat-window {
+            position: fixed;
+            bottom: 6rem;
+            right: 2.5rem;
+            width: 380px;
+            height: 600px;
+            max-height: 80vh;
+            background: rgba(13, 20, 33, 0.85);
+            backdrop-filter: blur(24px);
+            -webkit-backdrop-filter: blur(24px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-xl);
+            box-shadow: var(--shadow-lg), 0 0 0 1px rgba(59, 130, 246, 0.05);
+            z-index: 9998;
+            display: flex;
+            flex-direction: column;
+            overflow: hidden;
+            transform-origin: bottom right;
+            transform: scale(0.8);
+            opacity: 0;
+            pointer-events: none;
+            transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.1);
+        }
+
+        .chat-window.open {
+            transform: scale(1);
+            opacity: 1;
+            pointer-events: auto;
+        }
+
+        .chat-header {
+            padding: 1.2rem 1.5rem;
+            background: rgba(255, 255, 255, 0.02);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .chat-header-info {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .bot-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            box-shadow: 0 0 15px rgba(59, 130, 246, 0.4);
+        }
+
+        .bot-status {
+            font-size: 0.75rem;
+            color: var(--success);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .bot-status::before {
+            content: '';
+            width: 6px;
+            height: 6px;
+            background: var(--success);
+            border-radius: 50%;
+            display: block;
+        }
+
+        .close-chat {
+            background: none;
+            border: none;
+            color: var(--text-dim);
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+
+        .close-chat:hover {
+            color: var(--text-primary);
+        }
+
+        .chat-body {
+            flex: 1;
+            padding: 1.5rem;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            scroll-behavior: smooth;
+        }
+
+        .msg-container {
+            display: flex;
+            flex-direction: column;
+            max-width: 85%;
+        }
+
+        .msg-bot {
+            align-self: flex-start;
+        }
+
+        .msg-user {
+            align-self: flex-end;
+            align-items: flex-end;
+        }
+
+        .msg-bubble {
+            padding: 0.8rem 1.2rem;
+            border-radius: 1.2rem;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            position: relative;
+        }
+
+        .msg-bot .msg-bubble {
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-bottom-left-radius: 0.3rem;
+            color: var(--text-primary);
+        }
+
+        .msg-user .msg-bubble {
+            background: var(--accent-blue);
+            color: white;
+            border-bottom-right-radius: 0.3rem;
+        }
+
+        .msg-time {
+            font-size: 0.7rem;
+            color: var(--text-dim);
+            margin-top: 0.3rem;
+            padding: 0 0.5rem;
+        }
+
+        .bot-typing {
+            display: flex;
+            gap: 4px;
+            padding: 1rem 1.2rem;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 1.2rem;
+            border-bottom-left-radius: 0.3rem;
+            width: fit-content;
+            align-self: flex-start;
+            display: none;
+        }
+
+        .typing-dot {
+            width: 6px;
+            height: 6px;
+            background: var(--text-muted);
+            border-radius: 50%;
+            animation: bounce 1.4s infinite ease-in-out both;
+        }
+
+        .typing-dot:nth-child(1) { animation-delay: -0.32s; }
+        .typing-dot:nth-child(2) { animation-delay: -0.16s; }
+
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
+        .chat-footer {
+            padding: 1rem 1.5rem;
+            background: rgba(8, 12, 18, 0.9);
+            border-top: 1px solid var(--border);
+            display: flex;
+            gap: 0.8rem;
+        }
+
+        .chat-input {
+            flex: 1;
+            background: var(--glass);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px;
+            padding: 0.8rem 1.2rem;
+            color: var(--text-primary);
+            font-size: 0.95rem;
+            outline: none;
+            transition: var(--transition);
+        }
+
+        .chat-input:focus {
+            border-color: var(--accent-blue);
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.15);
+        }
+
+        .chat-send {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: var(--accent-blue);
+            border: none;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            cursor: pointer;
+            transition: var(--transition);
+            flex-shrink: 0;
+        }
+
+        .chat-send:hover {
+            background: var(--accent-blue-2);
+            transform: scale(1.05);
+        }
+        
+        /* Options Bubbles */
+        .chat-options {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.5rem;
+        }
+        
+        .chat-option-btn {
+            background: rgba(59, 130, 246, 0.15);
+            border: 1px solid rgba(59, 130, 246, 0.3);
+            color: var(--accent-blue);
+            padding: 0.5rem 1rem;
+            border-radius: 100px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+        }
+        
+        .chat-option-btn:hover {
+            background: var(--accent-blue);
+            color: white;
+        }
+
+        /* ── Responsive ── */
+        @media (max-width: 900px) {
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding-top: 120px;
+            }
+            .hero-content {
+                padding-right: 0;
+                margin-bottom: 3rem;
+            }
+            .hero-btn-group {
+                justify-content: center;
+            }
+            .hero-image-wrap img {
+                transform: translateX(0);
+                max-width: 100%;
+            }
+            .header-nav {
+                display: none; /* simple mobile view */
+            }
+            .chat-window {
+                width: calc(100% - 2rem);
+                right: 1rem;
+                left: 1rem;
+                bottom: 5.5rem;
+                height: calc(100dvh - 7rem);
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- ── HEADER ── -->
+    <header class="main-header" id="header">
+        <a href="#" class="logo">Z<span>12</span></a>
+        
+        <nav class="header-nav">
+            <a href="#services" class="nav-link">Services</a>
+            <a href="#how-it-works" class="nav-link">How it Works</a>
+            <a href="#reviews" class="nav-link">Reviews</a>
+        </nav>
+
+        <div class="header-actions" id="authNav">
+            <!-- Injected via JS -->
+        </div>
+    </header>
+
+    <!-- ── HERO ── -->
+    <main>
+        <section class="hero">
+            <div class="hero-bg-glow"></div>
+            <div class="hero-content">
+                <div class="hero-tag">
+                    <span class="dot"></span> Dubai's #1 Rated Mobile Wash
+                </div>
+                <h1 class="hero-title">Premium Car Care,<br>Delivered to You.</h1>
+                <p class="hero-desc">
+                    Experience the ultimate in mobile car detailing. Our expert technicians arrive at your location with premium, eco-friendly products to restore your vehicle's showroom shine.
+                </p>
+                <div class="hero-btn-group">
+                    <button class="btn btn-primary btn-lg" onclick="toggleChat()">Book via AI Assistant</button>
+                    <a href="#services" class="btn btn-outline btn-lg">View Services</a>
+                </div>
+            </div>
+            <div class="hero-image-wrap">
+                <img src="hero.png" alt="Z12 Premium Car Wash Vehicle" class="floating" onerror="this.src='https://images.unsplash.com/photo-1601362840469-51e4d8d58785?q=80&w=1000&auto=format&fit=crop'; this.style.borderRadius='20px';" />
+            </div>
+        </section>
+
+        <!-- ── SERVICES ── -->
+        <section class="services" id="services">
+            <div class="section-header animate-in">
+                <div class="section-tag">Our Packages</div>
+                <h2 class="section-title">Detailing Excellence</h2>
+                <p class="section-subtitle">Choose from our curated selection of premium wash packages designed to meet the highest standards of automotive care.</p>
+            </div>
+
+            <div class="services-grid">
+                <!-- Service 1 -->
+                <div class="service-card animate-in" style="animation-delay: 0.1s;">
+                    <div class="service-icon">✨</div>
+                    <div class="service-price">149 <span>AED</span></div>
+                    <h3>Signature Exterior</h3>
+                    <p>PH-neutral snow foam wash, two-bucket hand wash, wheel deep cleaning, tire dressing, and streak-free glass polish.</p>
+                    <button class="btn btn-outline btn-full" onclick="startBooking('Signature Exterior')">Book Now</button>
+                </div>
+
+                <!-- Service 2 -->
+                <div class="service-card animate-in" style="animation-delay: 0.2s;">
+                    <div class="service-icon">🛋️</div>
+                    <div class="service-price">229 <span>AED</span></div>
+                    <h3>Premium Interior</h3>
+                    <p>Deep vacuum, steam cleaning of upholstery, leather conditioning, dashboard UV protection, and odor elimination.</p>
+                    <button class="btn btn-outline btn-full" onclick="startBooking('Premium Interior')">Book Now</button>
+                </div>
+
+                <!-- Service 3 -->
+                <div class="service-card animate-in" style="animation-delay: 0.3s;">
+                    <div class="service-icon">💎</div>
+                    <div class="service-price">499 <span>AED</span></div>
+                    <h3>Z12 Ultimate Detail</h3>
+                    <p>Full interior & exterior revitalization + 6-month ceramic wax sealant, engine bay wipe down, and clay bar treatment.</p>
+                    <button class="btn btn-primary btn-full" onclick="startBooking('Z12 Ultimate Detail')">Get the Ultimate</button>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- ── AI CHAT WIDGET ── -->
+    <button class="chat-widget-btn" id="chatOpenBtn" aria-label="Open AI Assistant" onclick="toggleChat()">
+        <span class="bot-eye">🤖</span>
+    </button>
+
+    <div class="chat-window" id="chatWindow">
+        <div class="chat-header">
+            <div class="chat-header-info">
+                <div class="bot-avatar">🤖</div>
+                <div>
+                    <div style="font-weight: 700; font-size: 0.95rem;">Z12 Assistant</div>
+                    <div class="bot-status">Online</div>
+                </div>
+            </div>
+            <button class="close-chat" onclick="toggleChat()">&times;</button>
+        </div>
+        
+        <div class="chat-body" id="chatBody">
+            <div class="msg-container msg-bot" style="margin-top: auto;">
+                <div class="msg-bubble">
+                    Hi! I'm the Z12 AI assistant. Ready to get your car looking pristine? 🚘✨
+                </div>
+                <div class="msg-time">Just now</div>
+            </div>
+            <div class="msg-container msg-bot" id="initialBotOptions">
+                <div class="msg-bubble" style="background:transparent; border:none; padding:0;">
+                    <div class="chat-options">
+                        <button class="chat-option-btn" onclick="sendOption('I want to book a wash')">Book a wash</button>
+                        <button class="chat-option-btn" onclick="sendOption('What are your prices?')">View prices</button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="bot-typing" id="botTypingIndicator">
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+                <div class="typing-dot"></div>
+            </div>
+        </div>
+        
+        <div class="chat-footer">
+            <input type="text" class="chat-input" id="chatInput" placeholder="Type a message..." onkeypress="handleKeyPress(event)" />
+            <button class="chat-send" onclick="sendMessage()">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
+        </div>
+    </div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script>
+        // ── Firebase Init ──
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5gpmCX8Qunh3qkgNhA2fvkd2ijWgNt6c",
+            authDomain: "z12-car-wash.firebaseapp.com",
+            projectId: "z12-car-wash",
+            storageBucket: "z12-car-wash.firebasestorage.app",
+            messagingSenderId: "1018370366812",
+            appId: "1:1018370366812:web:4c4e618f442a9b0b28f599"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // ── Auth Handling ──
+        auth.onAuthStateChanged(user => {
+            const nav = document.getElementById('authNav');
+            if (user) {
+                const isAdmin = user.email === 'admin@z12carwash.com';
+                nav.innerHTML = `
+                    ${isAdmin ? '<a href="admin.html" class="btn btn-ghost btn-sm" style="margin-right:1rem;color:var(--accent-blue);">🛡️ Admin</a>' : ''}
+                    <a href="profile.html" class="btn btn-primary btn-sm">My Profile</a>
+                `;
+            } else {
+                nav.innerHTML = `
+                    <a href="signin.html" class="btn btn-ghost btn-sm">Sign In</a>
+                    <a href="signin.html" class="btn btn-primary btn-sm">Sign Up</a>
+                `;
+            }
+        });
+
+        // Header Scrolled effect
+        window.addEventListener('scroll', () => {
+            const header = document.getElementById('header');
+            if (window.scrollY > 50) {
+                header.style.background = 'rgba(8, 12, 18, 0.9)';
+                header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.3)';
+            } else {
+                header.style.background = 'rgba(8, 12, 18, 0.75)';
+                header.style.boxShadow = 'none';
+            }
+        });
+
+        // ── Chatbot Logic ──
+        let chatOpen = false;
+        let chatStep = 0;
+        let bookingDetails = {};
+
+        function toggleChat() {
+            chatOpen = !chatOpen;
+            const win = document.getElementById('chatWindow');
+            if (chatOpen) {
+                win.classList.add('open');
+                setTimeout(() => document.getElementById('chatInput').focus(), 300);
+            } else {
+                win.classList.remove('open');
+            }
+        }
+
+        function startBooking(serviceName) {
+            if(!chatOpen) toggleChat();
+            setTimeout(() => {
+                sendOption(`I want the ${serviceName} package`);
+            }, 400);
+        }
+
+        function scrollToBottom() {
+            const body = document.getElementById('chatBody');
+            body.scrollTop = body.scrollHeight;
+        }
+
+        function handleKeyPress(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        }
+
+        function sendOption(text) {
+            document.getElementById('initialBotOptions').style.display = 'none';
+            const input = document.getElementById('chatInput');
+            input.value = text;
+            sendMessage();
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('chatInput');
+            const text = input.value.trim();
+            if (!text) return;
+            
+            // Remove initial options if they click send manually
+            const initOpts = document.getElementById('initialBotOptions');
+            if(initOpts) initOpts.style.display = 'none';
+
+            addUserMsg(text);
+            input.value = '';
+            
+            showTyping();
+            
+            // AI Logic Mock
+            setTimeout(() => {
+                hideTyping();
+                processBotResponse(text);
+            }, 1000 + Math.random() * 1000);
+        }
+
+        function addUserMsg(text) {
+            const container = document.createElement('div');
+            container.className = 'msg-container msg-user';
+            container.innerHTML = `
+                <div class="msg-bubble">${text}</div>
+                <div class="msg-time">Just now</div>
+            `;
+            const body = document.getElementById('chatBody');
+            body.insertBefore(container, document.getElementById('botTypingIndicator'));
+            scrollToBottom();
+        }
+
+        function addBotMsg(text, options = []) {
+            const container = document.createElement('div');
+            container.className = 'msg-container msg-bot';
+            
+            let html = `<div class="msg-bubble">${text}</div>`;
+            
+            if (options.length > 0) {
+                let btns = options.map(opt => `<button class="chat-option-btn" onclick="sendOption('${opt}')">${opt}</button>`).join('');
+                html += `<div class="chat-options" style="margin-top:8px;">${btns}</div>`;
+            }
+            
+            html += `<div class="msg-time">Just now</div>`;
+            container.innerHTML = html;
+            
+            const body = document.getElementById('chatBody');
+            body.insertBefore(container, document.getElementById('botTypingIndicator'));
+            scrollToBottom();
+        }
+
+        function showTyping() {
+            document.getElementById('botTypingIndicator').style.display = 'flex';
+            scrollToBottom();
+        }
+
+        function hideTyping() {
+            document.getElementById('botTypingIndicator').style.display = 'none';
+        }
+
+        // Mock AI Decision Tree
+        function processBotResponse(userInput) {
+            const text = userInput.toLowerCase();
+            
+            if (chatStep === 0) {
+                if (text.includes('price') || text.includes('cost') || text.includes('how much')) {
+                    addBotMsg("Our Signature Exterior is 149 AED, Premium Interior is 229 AED, and the Ultimate Detail is 499 AED. Would you like to book one?", ["Yes, let's book", "No, thanks"]);
+                } 
+                else if (text.includes('book') || text.includes('wash') || text.includes('package')) {
+                    chatStep = 1;
+                    addBotMsg("Excellent! Which package would you prefer?", ["Signature Exterior", "Premium Interior", "Z12 Ultimate"]);
+                } 
+                else {
+                    addBotMsg("I can help you book a premium car wash right here. Shall we start?", ["Yes, let's book", "Show me prices"]);
+                }
+            } 
+            else if (chatStep === 1) {
+                bookingDetails.package = userInput;
+                chatStep = 2;
+                addBotMsg(`Great choice with the ${userInput}! Are you located in Dubai?`, ["Yes, Al Wasl", "Yes, Marina", "Other area"]);
+            }
+            else if (chatStep === 2) {
+                bookingDetails.location = userInput;
+                chatStep = 3;
+                addBotMsg("Got it. We have availability tomorrow morning or afternoon. What time works best?", ["Morning (9am)", "Afternoon (2pm)", "Another day"]);
+            }
+            else if (chatStep === 3) {
+                bookingDetails.time = userInput;
+                
+                if (auth.currentUser) {
+                    // Logged in
+                    addBotMsg(`Perfect! I'll book the ${bookingDetails.package} at ${bookingDetails.location} for ${bookingDetails.time}. Can I confirm this booking?`, ["Confirm Booking", "Cancel"]);
+                    chatStep = 5;
+                } else {
+                    // Not logged in
+                    addBotMsg(`Almost done! To finalize your ${bookingDetails.package} booking, please sign in or create a quick account.`, ["Go to Sign In"]);
+                    chatStep = 4;
+                }
+            }
+            else if (chatStep === 4) {
+                if (text.includes('sign in')) {
+                    window.location.href = 'signin.html';
+                }
+            }
+            else if (chatStep === 5) {
+                if (text.includes('confirm')) {
+                    addBotMsg("✅ Booking confirmed! You can view the details in your profile. We'll see you soon!");
+                    // To truly save mock bot bookings, it would be passed to Firestore here.
+                    setTimeout(() => { window.location.href = 'profile.html'; }, 2000);
+                } else {
+                    addBotMsg("Booking cancelled. Let me know if you need anything else!");
+                    chatStep = 0;
+                }
+            }
+        }
+
+    </script>
+</body>
+
+</html>

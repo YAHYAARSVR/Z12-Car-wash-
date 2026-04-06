@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Admin Dashboard — Z12 Car Wash</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="shared.css" />
+    
+    <style>
+        body { padding: 4rem 1rem; }
+        .admin-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: var(--bg-secondary);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2rem;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+        }
+        .admin-header {
+            display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 1rem;
+        }
+        table {
+            width: 100%; border-collapse: collapse; text-align: left;
+        }
+        th, td { padding: 1.2rem 1rem; border-bottom: 1px solid rgba(255,255,255,0.05); }
+        th { color: var(--text-muted); font-weight: 500; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 1px; }
+        tr:hover td { background: rgba(59, 130, 246, 0.05); }
+        .badge {
+            display: inline-block; padding: 0.3rem 0.8rem; border-radius: 20px; font-size: 0.75rem; font-weight: 600; text-transform: uppercase;
+        }
+        .b-upcoming { background: rgba(34,197,94,0.15); color: #4ade80; border: 1px solid rgba(34,197,94,0.3); }
+        .b-completed { background: rgba(255,255,255,0.1); color: #fff; border: 1px solid rgba(255,255,255,0.2); }
+        .b-cash { color: #facc15; }
+        .b-card { color: #60a5fa; }
+        
+        #unauthorized { display: none; text-align: center; color: var(--danger); padding: 5rem 0; font-size: 1.5rem; }
+        #toast { position: fixed; bottom: 2rem; right: 2rem; padding: 1rem 1.5rem; background: var(--bg-secondary); border: 1px solid var(--border); border-radius: var(--radius-md); transform: translateY(150%); transition: all 0.3s ease; z-index: 9999; }
+        #toast.show { transform: translateY(0); }
+        #toast.error { border-color: var(--danger); color: var(--danger); }
+
+        /* Manual Booking Form */
+        .manual-booking-box {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px dashed var(--border);
+            border-radius: var(--radius-lg);
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr auto;
+            gap: 1rem;
+            align-items: flex-end;
+        }
+        .form-group label {
+            display: block; font-size: 0.75rem; color: var(--text-muted); margin-bottom: 0.4rem; font-weight: 600; text-transform: uppercase;
+        }
+        .form-input {
+            width: 100%; background: var(--bg-primary); border: 1px solid var(--border); border-radius: var(--radius-md); padding: 0.7rem; color: #fff; font-size: 0.9rem;
+        }
+        .form-input:focus { border-color: var(--accent-blue); outline: none; }
+    </style>
+</head>
+<body>
+
+    <div id="unauthorized">
+        <h1>Access Denied</h1>
+        <p style="color:var(--text-muted);font-size:1rem;margin-top:0.5rem;margin-bottom:2rem;">This page is restricted to authorized administrative personnel only.</p>
+        <a href="index.html" class="btn btn-primary" style="margin-top: 1rem">Return Home</a>
+    </div>
+
+    <div class="admin-container" id="adminContent" style="display:none;">
+        <div class="admin-header">
+            <div>
+                <h1 style="font-size:2rem;margin-bottom:0.2rem;color:transparent;background:var(--primary-gradient);-webkit-background-clip:text;background-clip:text;">Global Bookings Engine</h1>
+                <p style="color:var(--text-muted);font-size:0.9rem;">View and manage all customer reservations dynamically.</p>
+            </div>
+            <div>
+                <a href="profile.html" class="btn btn-ghost" style="margin-right:1rem;">My Profile</a>
+                <a href="index.html" class="btn btn-primary">Exit Admin</a>
+            </div>
+        </div>
+
+        <!-- Manual Add Section -->
+        <div class="manual-booking-box">
+            <h3 style="font-size:1rem;margin-bottom:1rem;display:flex;align-items:center;gap:0.5rem;"><span>➕</span> Add Manual Booking</h3>
+            <div class="form-row">
+                <div class="form-group">
+                    <label>Date</label>
+                    <input type="date" id="m-date" class="form-input">
+                </div>
+                <div class="form-group">
+                    <label>Time</label>
+                    <select id="m-time" class="form-input">
+                        <option value="9:00 AM">9:00 AM</option>
+                        <option value="10:00 AM">10:00 AM</option>
+                        <option value="11:00 AM">11:00 AM</option>
+                        <option value="12:00 PM">12:00 PM</option>
+                        <option value="1:00 PM">1:00 PM</option>
+                        <option value="2:00 PM">2:00 PM</option>
+                        <option value="3:00 PM">3:00 PM</option>
+                        <option value="4:00 PM">4:00 PM</option>
+                        <option value="5:00 PM">5:00 PM</option>
+                        <option value="6:00 PM">6:00 PM</option>
+                        <option value="7:00 PM">7:00 PM</option>
+                        <option value="8:00 PM">8:00 PM</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label>Customer (Name/Email)</label>
+                    <input type="text" id="m-user" class="form-input" placeholder="e.g. Walk-in Customer">
+                </div>
+                <button class="btn btn-primary" onclick="addManualBooking()">Add Booking</button>
+            </div>
+        </div>
+
+        <div style="overflow-x: auto;">
+            <table id="bookingsTable">
+                <thead>
+                    <tr>
+                        <th>Date</th>
+                        <th>Time</th>
+                        <th>Service Type</th>
+                        <th>Customer Web ID</th>
+                        <th>Payment Expected</th>
+                        <th>Status</th>
+                        <th>Management Actions</th>
+                    </tr>
+                </thead>
+                <tbody id="bookingsBody">
+                    <tr><td colspan="7" style="text-align:center;padding:2rem;">Synchronizing Database...</td></tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.11.0/firebase-firestore-compat.js"></script>
+    <script>
+        const firebaseConfig = {
+            apiKey: "AIzaSyB5gpmCX8Qunh3qkgNhA2fvkd2ijWgNt6c",
+            authDomain: "z12-car-wash.firebaseapp.com",
+            projectId: "z12-car-wash",
+            storageBucket: "z12-car-wash.firebasestorage.app",
+            messagingSenderId: "1018370366812",
+            appId: "1:1018370366812:web:4c4e618f442a9b0b28f599"
+        };
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+        const db = firebase.firestore();
+
+        const $ = id => document.getElementById(id);
+        
+        // ADMIN AUTHORIZATION MIDDLEWARE
+        auth.onAuthStateChanged(user => {
+            if(!user) {
+                window.location.href = 'signin.html';
+                return;
+            }
+            
+            // STRICT EMAIL ENFORCEMENT
+            if(user.email === 'admin@z12carwash.com') {
+                $('adminContent').style.display = 'block';
+                loadBookings();
+            } else {
+                $('unauthorized').style.display = 'block';
+            }
+        });
+
+        function loadBookings() {
+            db.collection('bookings').orderBy('datetime', 'desc').onSnapshot(snap => {
+                const tbody = $('bookingsBody');
+                tbody.innerHTML = '';
+                if(snap.empty) {
+                    tbody.innerHTML = '<tr><td colspan="7" style="text-align:center;padding:2rem;color:var(--text-muted);">0 Bookings tracked on this platform.</td></tr>';
+                    return;
+                }
+                
+                snap.docs.forEach(doc => {
+                    const data = doc.data();
+                    const tr = document.createElement('tr');
+                    
+                    const payClass = data.paymentMode === 'cash' ? 'b-cash' : 'b-card';
+                    const statClass = data.status === 'upcoming' ? 'b-upcoming' : 'b-completed';
+                    // Parse date visually
+                    const d = new Date(data.datetime);
+                    const dtFormat = d.toLocaleDateString('en-AE', { weekday: 'short', month: 'short', day: 'numeric', year: 'numeric' });
+
+                    tr.innerHTML = `
+                        <td style="font-weight:600">${dtFormat}</td>
+                        <td style="color:var(--text-muted);">${data.time}</td>
+                        <td>${data.service}</td>
+                        <td style="font-family:monospace;font-size:0.8rem;color:var(--accent-blue);">${data.userId}</td>
+                        <td class="${payClass}" style="text-transform:capitalize;font-weight:500;">
+                            ${data.paymentMode === 'cash' ? '💵 Cash' : '💳 Card'}
+                        </td>
+                        <td><span class="badge ${statClass}">${data.status}</span></td>
+                        <td>
+                            <div style="display:flex;gap:0.5rem;">
+                                ${data.status === 'upcoming' ? `<button class="btn btn-ghost" style="padding:0.4rem 0.8rem;font-size:0.8rem;color:var(--success);border-color:rgba(34,197,94,0.3);" onclick="updateStatus('${doc.id}', 'completed')">Complete</button>` : ''}
+                                <button class="btn btn-ghost" style="padding:0.4rem 0.8rem;font-size:0.8rem;color:var(--danger);border: 1px solid rgba(220,38,38,0.3);" onclick="deleteBooking('${doc.id}')">Cancel</button>
+                            </div>
+                        </td>
+                    `;
+                    tbody.appendChild(tr);
+                });
+            });
+        }
+
+        async function updateStatus(id, newStatus) {
+            try {
+                await db.collection('bookings').doc(id).update({ status: newStatus });
+                toast('Booking status updated!');
+            } catch(e) {
+                toast('Error: ' + e.message, true);
+            }
+        }
+
+        async function addManualBooking() {
+            const dateVal = $('m-date').value;
+            const timeVal = $('m-time').value;
+            const userVal = $('m-user').value || 'Manual Entry';
+
+            if(!dateVal) { toast('Please select a date', true); return; }
+
+            const bookingDate = new Date(dateVal);
+            const booking = {
+                userId: 'ADMIN_MANUAL_' + Date.now(),
+                customerName: userVal,
+                datetime: bookingDate.toISOString(),
+                dateCode: bookingDate.toISOString().split('T')[0],
+                time: timeVal,
+                service: 'Premium Car Wash (Manual)',
+                status: 'upcoming',
+                paymentMode: 'cash'
+            };
+
+            try {
+                await db.collection('bookings').add(booking);
+                toast('Manual booking added!');
+                $('m-date').value = '';
+                $('m-user').value = '';
+            } catch(e) {
+                toast('Error: ' + e.message, true);
+            }
+        }
+
+        async function deleteBooking(id) {
+            if(!confirm('WARNING: Are you sure you want to permanently delete this booking from the Global Database?')) return;
+            try {
+                await db.collection('bookings').doc(id).delete();
+                toast('Booking successfully terminated.');
+            } catch(e) {
+                toast('Error: ' + e.message, true);
+            }
+        }
+
+        function toast(msg, isError = false) {
+            const t = $('toast');
+            t.textContent = msg;
+            t.className = 'show' + (isError ? ' error' : '');
+            setTimeout(() => t.classList.remove('show'), 3500);
+        }
+    </script>
+</body>
+</html>
